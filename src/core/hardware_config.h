@@ -7,9 +7,6 @@
 #define LED_PORT                GPIOA
 #define LED_PIN                 GPIO_PIN_15
 
-#define DEBUG_PORT              GPIOB
-#define DEBUG_PIN               GPIO_PIN_12
-#define _BUG                    gpio_bit_write(DEBUG_PORT, DEBUG_PIN, !gpio_output_bit_get(DEBUG_PORT, DEBUG_PIN))
 
 #define PUMP_PWM_PORT           GPIOB
 #define PUMP_PWM_PIN            GPIO_PIN_5

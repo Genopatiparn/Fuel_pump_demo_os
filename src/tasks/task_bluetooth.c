@@ -32,6 +32,22 @@ void task_bluetooth(void *pvParameter)
             }
         }
 
+        if (BT5._Fadduser == SET)
+        {
+            *pump.Mac0 = BT5.buffname[0];
+            *pump.Mac1 = BT5.buffname[1];
+            *pump.Mac2 = BT5.buffname[2];
+            *pump.Mac3 = BT5.buffname[3];
+            mem_write(&pump.mem_save);
+            BT5._Fadduser = RESET;
+            BT5.mobileconnect = SET;
+            BT5.mobileActivity = 0;
+            BT5._FsenYES = SET;
+            BT5._Fsenabout = SET;
+            BT5._FsenTset = SET;
+            BT5._FsenTune = SET;
+        }
+
         if (BT5.delaysend < 100)
         {
             BT5.delaysend++;

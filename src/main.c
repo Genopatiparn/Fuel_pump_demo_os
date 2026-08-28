@@ -60,17 +60,10 @@ void init_0(void)
     pump.yduty[4] = 10;
     pump.yduty[5] = 2;
 
-    // Initialize MAC address from flash or set default
     mem_read(&pump.mem_save);
-    
-    // Set MAC to match App: 032D1B72
-    // App sends: #INJ032D1B72 (4 chars after #INJ)
-    *pump.Mac0 = '0';
-    *pump.Mac1 = '3';
-    *pump.Mac2 = '2';
-    *pump.Mac3 = 'D';
-    
+
     pump._Ftestoutput = RESET;
+    BT5._Fadduser = RESET;
     BT5._Fsetpower = RESET;      // Don't send AT+POWR anymore
     BT5._Fsetconni = RESET;      // Don't send AT+CONN anymore
     BT5._FATrespond = RESET;

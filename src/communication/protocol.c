@@ -326,7 +326,6 @@ void USART2_IRQHandler(void)
         rxbuf[index++] = temp;
         index %= 90;
         rxbuf[index] = '\0';
-        _BUG;  // Debug LED toggle when byte received
     }
 
     if (temp != '\n')
@@ -393,7 +392,18 @@ void USART2_IRQHandler(void)
         }
         else
         {
-            BT5._FsenNO = SET;
+            if (pump.rpm == 0)
+            {
+                BT5.buffname[0] = rxbuf[4];
+                BT5.buffname[1] = rxbuf[5];
+                BT5.buffname[2] = rxbuf[6];
+                BT5.buffname[3] = rxbuf[7];
+                BT5._Fadduser = SET;
+            }
+            else
+            {
+                BT5._FsenNO = SET;
+            }
         }
     }
     else if (strstr(rxbuf, "#SETB") != NULL)

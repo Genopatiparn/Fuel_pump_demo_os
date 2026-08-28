@@ -21,7 +21,6 @@ void USART0_IRQHandler(void)
     if (usart_interrupt_flag_get(USART0, USART_INT_FLAG_RT) == SET)
     {
         usart_interrupt_flag_clear(USART0, USART_INT_FLAG_RT);
-        _BUG;
         osEventFlagsSet(pump.eventFlagsSerial, 0x0001);
         index = 0;
     }
