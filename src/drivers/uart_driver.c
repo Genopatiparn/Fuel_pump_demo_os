@@ -5,8 +5,8 @@ void init_uart_bluetooth(void)
     rcu_periph_clock_enable(RCU_USART2);
 
     // TX = PB10, RX = PB11
-    gpio_init(GPIOB, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_10);
-    gpio_init(GPIOB, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, GPIO_PIN_11);
+    gpio_init(UART_BT_PORT, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, UART_BT_TX);
+    gpio_init(UART_BT_PORT, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, UART_BT_RX);
 
     // setup DMA for TX
     dma_parameter_struct dma_data_parameter = {
@@ -50,8 +50,8 @@ void init_uart_bluetooth(void)
 void init_uart0(void)
 {
     // TX = PA9, RX = PA10
-    gpio_init(GPIOA, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_9);
-    gpio_init(GPIOA, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_10);
+    gpio_init(UART_TUNE_PORT, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, UART_TUNE_TX);
+    gpio_init(UART_TUNE_PORT, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, UART_TUNE_RX);
 
     usart_deinit(USART0);
     usart_baudrate_set(USART0, 115200);

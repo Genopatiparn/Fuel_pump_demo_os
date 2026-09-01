@@ -7,5 +7,6 @@ void init_gpio()
     gpio_bit_write(LED_PORT, LED_PIN, SET);
     
     // Fuel pump enable input (PC8) - active low
-    gpio_init(GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_2MHZ, GPIO_PIN_8);
+    gpio_init(PUMP_STATUS_PORT, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_2MHZ,
+              PUMP_STATUS_PIN);
 }

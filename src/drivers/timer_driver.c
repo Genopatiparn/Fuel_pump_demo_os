@@ -92,7 +92,8 @@ void init_injector(void)
     rcu_periph_clock_enable(RCU_TIMER7);
     
     // setup injector input pin
-    gpio_init(GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_2MHZ, GPIO_PIN_6);
+    gpio_init(INJ_INPUT_PORT, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_2MHZ,
+              INJ_INPUT_PIN);
 
     timer_deinit(TIMER7);
     

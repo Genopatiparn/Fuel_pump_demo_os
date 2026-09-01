@@ -69,21 +69,9 @@ extern uint32_t SystemCoreClock;
 #define SysTick_Handler xPortSysTickHandler
 #endif
 
-/* runtime stats generation. can be turned off to save space. */
-// #define configGENERATE_RUN_TIME_STATS	1
-#if configGENERATE_RUN_TIME_STATS == 1
-/* Constants related to the generation of run time stats.  Run time stats
-are gathered in the full demo, not the blinky demo. */
-void vConfigureTimerForRunTimeStats( void );
-uint32_t ulGetRunTimeCounterValue( void );
-#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() vConfigureTimerForRunTimeStats()
-#define portGET_RUN_TIME_COUNTER_VALUE() ulGetRunTimeCounterValue()
-#endif
-
 /* Set the following definitions to 1 to include the API function, or zero
  * to exclude the API function. */
 
-#define configUSE_MALLOC_FAILED_HOOK              1
 #define configUSE_MUTEXES                         1
 #define configUSE_RECURSIVE_MUTEXES               1
 #define configUSE_TIMERS                          1

@@ -87,7 +87,7 @@ void TIMER7_Channel_IRQHandler(void)
     if (timer_interrupt_flag_get(TIMER7, TIMER_INT_FLAG_CH2) != RESET)
     {
         // check if still HIGH (pulse still active)
-        if (gpio_input_bit_get(GPIOC, GPIO_PIN_6) == SET)
+        if (gpio_input_bit_get(INJ_INPUT_PORT, INJ_INPUT_PIN) == SET)
         {
             // capture the period (time between pulses)
             pump.timeCapRpm = timer_channel_capture_value_register_read(TIMER7, TIMER_CH_0);

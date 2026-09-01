@@ -3,7 +3,7 @@
 void init_adc()
 {
     // setup ADC pin (PC0 = ADC0_IN10)
-    gpio_init(GPIOC, GPIO_MODE_AIN, GPIO_OSPEED_2MHZ, GPIO_PIN_0);
+    gpio_init(CURRENT_PORT, GPIO_MODE_AIN, GPIO_OSPEED_2MHZ, CURRENT_PIN);
 
     // ADC mode config
     adc_mode_config(ADC_MODE_FREE);
