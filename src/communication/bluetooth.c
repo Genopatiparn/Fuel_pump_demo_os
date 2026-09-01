@@ -50,14 +50,14 @@ void s_dataBTNwithoutsum(unsigned long _data, short num)
         buff += 0x30;
         if (buff > 0x39)
             buff += 0x07;
-        BT5._tempBTN[BT5.numsend++] = buff;
+        BT._tempBTN[BT.numsend++] = buff;
         num -= 4;
     }
     buff = _data & 0x0F;
     buff += 0x30;
     if (buff > 0x39)
         buff += 0x07;
-    BT5._tempBTN[BT5.numsend++] = buff;
+    BT._tempBTN[BT.numsend++] = buff;
 }
 
 // Send data as hex with checksum
@@ -73,16 +73,16 @@ void s_dataBTN(unsigned long _data, short num)
         buff += 0x30;
         if (buff > 0x39)
             buff += 0x07;
-        BT5._tempBTN[BT5.numsend++] = buff;
-        BT5.sumtx += buff;
+        BT._tempBTN[BT.numsend++] = buff;
+        BT.sumtx += buff;
         num -= 4;
     }
     buff = _data & 0x0F;
     buff += 0x30;
     if (buff > 0x39)
         buff += 0x07;
-    BT5._tempBTN[BT5.numsend++] = buff;
-    BT5.sumtx += buff;
+    BT._tempBTN[BT.numsend++] = buff;
+    BT.sumtx += buff;
 }
 
 // Send string
@@ -90,10 +90,10 @@ void s_strBTN(char *_data)
 {
     while (*_data != '\0')
     {
-        BT5._tempBTN[BT5.numsend] = *_data;
-        BT5.sumtx += *_data;
-        BT5.numsend++;
-        BT5._tempBTN[BT5.numsend] = 0;
+        BT._tempBTN[BT.numsend] = *_data;
+        BT.sumtx += *_data;
+        BT.numsend++;
+        BT._tempBTN[BT.numsend] = 0;
         _data++;
     }
 }
@@ -102,25 +102,25 @@ void s_strBTN(char *_data)
 void txuartBTNNotsum(void)
 {
     s_strBTN("\r\n");
-    addToTxBuffer((char *)BT5._tempBTN, BT5.numsend);
-    BT5.delaysend = 0;
-    BT5.numsend = 0;
-    BT5.sumtx = 0;
+    addToTxBuffer((char *)BT._tempBTN, BT.numsend);
+    BT.delaysend = 0;
+    BT.numsend = 0;
+    BT.sumtx = 0;
 }
 
 // Transmit with checksum
 void txuartBTN(void)
 {
-    s_dataBTNwithoutsum(BT5.sumtx, 2); // add checksum
+    s_dataBTNwithoutsum(BT.sumtx, 2); // add checksum
     s_strBTN("\r\n");
-    addToTxBuffer((char *)BT5._tempBTN, BT5.numsend);
-    BT5.delaysend = 0;
-    BT5.numsend = 0;
-    BT5.sumtx = 0;
+    addToTxBuffer((char *)BT._tempBTN, BT.numsend);
+    BT.delaysend = 0;
+    BT.numsend = 0;
+    BT.sumtx = 0;
 }
 
 // Transmit command
-void txuartCMD_BTN(mBTN *btn)
+void txuartCMD_BTN(BlueTooth_module *btn)
 {
     addToTxBuffer((char *)btn->_tempBTN, btn->numsend);
     btn->delaysend = 0;

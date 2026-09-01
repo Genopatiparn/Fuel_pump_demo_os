@@ -7,79 +7,79 @@ extern void sendTuneBTN(void);
 extern void sendaboutBTN(void);
 extern void mbsendtext(char *_data);
 extern void s_strBTN(char *_data);
-extern void txuartCMD_BTN(mBTN *btn);
+extern void txuartCMD_BTN(BlueTooth_module *btn);
 
 void task_bluetooth(void *pvParameter)
 {
     (void)pvParameter;
     static uint16_t monitorDelay = 0;
     
-    BT5.mobileconnect = RESET;
-    BT5._FATmode = RESET;     // Disable AT mode
+    BT.mobileconnect = RESET;
+    BT._FATmode = RESET;     // Disable AT mode
     initTxBuffers();
     
     while (1)
     {
         osDelay(1);
 
-        if (BT5.mobileconnect == SET && BT5.mobileActivity < 20000)
+        if (BT.mobileconnect == SET && BT.mobileActivity < 20000)
         {
-            BT5.mobileActivity++;
-            if (BT5.mobileActivity == 20000)
+            BT.mobileActivity++;
+            if (BT.mobileActivity == 20000)
             {
                 mbsendtext("#TIMEOUT\r\n");
-                BT5.mobileconnect = RESET;
+                BT.mobileconnect = RESET;
             }
         }
 
-        if (BT5._Fadduser == SET)
+        if (BT._Fadduser == SET)
         {
-            *pump.Mac0 = BT5.buffname[0];
-            *pump.Mac1 = BT5.buffname[1];
-            *pump.Mac2 = BT5.buffname[2];
-            *pump.Mac3 = BT5.buffname[3];
+            *pump.Mac0 = BT.buffname[0];
+            *pump.Mac1 = BT.buffname[1];
+            *pump.Mac2 = BT.buffname[2];
+            *pump.Mac3 = BT.buffname[3];
             mem_write(&pump.mem_save);
-            BT5._Fadduser = RESET;
-            BT5.mobileconnect = SET;
-            BT5.mobileActivity = 0;
-            BT5._FsenYES = SET;
-            BT5._Fsenabout = SET;
-            BT5._FsenTset = SET;
-            BT5._FsenTune = SET;
+            BT._Fadduser = RESET;
+            BT.mobileconnect = SET;
+            BT.mobileActivity = 0;
+            BT._FsenYES = SET;
+            BT._Fsenabout = SET;
+            BT._FsenTset = SET;
+            BT._FsenTune = SET;
         }
 
-        if (BT5.delaysend < 100)
+        if (BT.delaysend < 100)
         {
-            BT5.delaysend++;
+            BT.delaysend++;
         }
-        else if (BT5._FsenYES == SET)
+        else if (BT._FsenYES == SET)
         {
             mbsendtext("#YES\n");
-            BT5._FsenYES = RESET;
+            BT._FsenYES = RESET;
         }
-        else if (BT5._FsenNO == SET)
+        else if (BT._FsenNO == SET)
         {
             mbsendtext("#NO\r\n");
-            BT5._FsenNO = RESET;
+            BT._FsenNO = RESET;
         }
-        else if (BT5._FsenDONE == SET)
+        else if (BT._FsenDONE == SET)
         {
             mbsendtext("#DONE\r\n");
-            BT5._FsenDONE = RESET;
+            BT._FsenDONE = RESET;
         }
-        else if (BT5._Fsenabout == SET)
+        else if (BT._Fsenabout == SET)
         {
             sendaboutBTN();
         }
-        else if (BT5._FsenTset == SET)
+        else if (BT._FsenTset == SET)
         {
             sendsetupBTN();
         }
-        else if (BT5._FsenTune == SET)
+        else if (BT._FsenTune == SET)
         {
             sendTuneBTN();
         }
-        else if (BT5.mobileconnect == SET)
+        else if (BT.mobileconnect == SET)
         {
             if (monitorDelay++ > 100)
             {

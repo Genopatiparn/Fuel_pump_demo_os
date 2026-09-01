@@ -6,7 +6,7 @@ extern unsigned short p_data(char _data, char num, char *address);
 extern void s_dataBTN(unsigned long _data, short num);
 extern void s_strBTN(char *_data);
 extern void txuartBTN(void);
-extern void txuartCMD_BTN(mBTN *btn);
+extern void txuartCMD_BTN(BlueTooth_module *btn);
 extern void mbsendtext(char *_data);
 
 // Check checksum
@@ -92,29 +92,29 @@ void sendaboutBTN(void)
         value = GetUID_Word0 & 0xFFFF;
         s_dataBTN(value, 4);
         s_strBTN("\n");
-        txuartCMD_BTN(&BT5);
+        txuartCMD_BTN(&BT);
         break;
     case 1:
         s_strBTN("#HARDWARE");
         s_dataBTN(_hardware, 4);
         s_strBTN("\n");
-        txuartCMD_BTN(&BT5);
+        txuartCMD_BTN(&BT);
         break;
     case 2:
         s_strBTN("#SOFTWARE");
         s_dataBTN(_firmware, 4);
         s_strBTN("\n");
-        txuartCMD_BTN(&BT5);
+        txuartCMD_BTN(&BT);
         break;
     case 3:
         s_strBTN("#CARTYPE");
-        s_dataBTN(BT5.cartype, 4);
+        s_dataBTN(BT.cartype, 4);
         s_strBTN("\n");
-        txuartCMD_BTN(&BT5);
+        txuartCMD_BTN(&BT);
         break;
     case 4:
         s_strBTN("#MODEL010\n");
-        txuartCMD_BTN(&BT5);
+        txuartCMD_BTN(&BT);
         break;
     case 5:
         s_strBTN("#BRAND");
@@ -123,11 +123,11 @@ void sendaboutBTN(void)
         s_dataBTN(H_data(*pump.Band2), 1);
         s_dataBTN(H_data(*pump.Band3), 1);
         s_strBTN("\n");
-        txuartCMD_BTN(&BT5);
+        txuartCMD_BTN(&BT);
         break;
     default:
         aboutStep = 0;
-        BT5._Fsenabout = RESET;
+        BT._Fsenabout = RESET;
         return;
     }
 
@@ -186,16 +186,16 @@ void getdatatunemobile(char *_data)
                     mem_write(&pump.mem_save);
                 }
                 else
-                    BT5._FsenNO = SET;
+                    BT._FsenNO = SET;
             }
             else
-                BT5._FsenNO = SET;
+                BT._FsenNO = SET;
         }
         else
-            BT5._FsenNO = SET;
+            BT._FsenNO = SET;
     }
     else
-        BT5._FsenNO = SET;
+        BT._FsenNO = SET;
 }
 
 // Get setup data from mobile
@@ -272,7 +272,7 @@ void sendsetupBTN(void)
         break;
     case 5:
         lop = 0;
-        BT5._FsenTset = RESET;
+        BT._FsenTset = RESET;
         break;
     }
 }
@@ -292,7 +292,7 @@ void sendTuneBTN(void)
     i++;
     if (i > 5)
     {
-        BT5._FsenTune = RESET;
+        BT._FsenTune = RESET;
         i = 0;
     }
 }
@@ -342,12 +342,12 @@ void USART2_IRQHandler(void)
             temp = rxbuf[(i + 7)];
             if ((temp != '\n') && (temp != '\r'))
             {
-                BT5.buffname[i] = temp;
+                BT.buffname[i] = temp;
             }
             else
                 break;
         }
-        BT5._Fgetname = SET;
+        BT._Fgetname = SET;
     }
     else if (strstr(rxbuf, "CC+MAC") != NULL)
     {
@@ -356,53 +356,53 @@ void USART2_IRQHandler(void)
             temp = rxbuf[(i + 6)];
             if ((temp != '\n') && (temp != '\r'))
             {
-                BT5.macaddress[i] = temp;
+                BT.macaddress[i] = temp;
             }
             else
                 break;
         }
-        BT5._Fgetmac = SET;
+        BT._Fgetmac = SET;
     }
     else if (strstr(rxbuf, "#ABOUT") != NULL)
     {
-        BT5._Fsenabout = SET;
+        BT._Fsenabout = SET;
     }
     else if (strstr(rxbuf, "#GETSET") != NULL || strstr(rxbuf, "#TSETLD") != NULL)
     {
-        BT5._FsenTset = SET;
+        BT._FsenTset = SET;
     }
     else if (strstr(rxbuf, "#GETTUN") != NULL || strstr(rxbuf, "#TTUNLD") != NULL)
     {
-        BT5._FsenTune = SET;
+        BT._FsenTune = SET;
     }
     else if (strstr(rxbuf, "#CALLINJ") != NULL)
     {
-        BT5.mobileActivity = 0;
+        BT.mobileActivity = 0;
     }
     else if (strstr(rxbuf, "#INJ") != NULL)
     {
         if (check_nmac(rxbuf) == RESET)
         {
-            BT5.mobileconnect = SET;
-            BT5.mobileActivity = 0;
-            BT5._FsenYES = SET;
-            BT5._Fsenabout = SET;
-            BT5._FsenTset = SET;
-            BT5._FsenTune = SET;
+            BT.mobileconnect = SET;
+            BT.mobileActivity = 0;
+            BT._FsenYES = SET;
+            BT._Fsenabout = SET;
+            BT._FsenTset = SET;
+            BT._FsenTune = SET;
         }
         else
         {
             if (pump.rpm == 0)
             {
-                BT5.buffname[0] = rxbuf[4];
-                BT5.buffname[1] = rxbuf[5];
-                BT5.buffname[2] = rxbuf[6];
-                BT5.buffname[3] = rxbuf[7];
-                BT5._Fadduser = SET;
+                BT.buffname[0] = rxbuf[4];
+                BT.buffname[1] = rxbuf[5];
+                BT.buffname[2] = rxbuf[6];
+                BT.buffname[3] = rxbuf[7];
+                BT._Fadduser = SET;
             }
             else
             {
-                BT5._FsenNO = SET;
+                BT._FsenNO = SET;
             }
         }
     }
@@ -415,11 +415,11 @@ void USART2_IRQHandler(void)
             *pump.Band2 = rxbuf[10];
             *pump.Band3 = rxbuf[11];
             mem_write(&pump.mem_save);
-            BT5._FsenYES = SET;
+            BT._FsenYES = SET;
         }
         else
         {
-            BT5._FsenNO = SET;
+            BT._FsenNO = SET;
         }
     }
     else if (strstr(rxbuf, "#CLEAR") != NULL)

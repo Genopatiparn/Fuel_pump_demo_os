@@ -172,11 +172,11 @@ typedef struct
     short cartype;
     short indexDataTune;
     unsigned char buffname[4];
-} mBTN;
+} BlueTooth_module;
 
 
 extern pump_t pump;
-extern mBTN BT5;
+extern BlueTooth_module BT;
 
 // driver function prototypes
 void init_gpio(void);

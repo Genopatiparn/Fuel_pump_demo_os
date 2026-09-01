@@ -2,7 +2,7 @@
 
 const char *__text = __StringVersion;
 pump_t pump;
-mBTN BT5;
+BlueTooth_module BT;
 
 osThreadAttr_t thread_attr = {
     .name = "MainTask",
@@ -33,12 +33,12 @@ void init_0(void)
     pump.o2type = (unsigned char *)&pump.mem_save.setup[27];
     pump.temptype = pump.o2type + 1;
 
-    BT5.mobilename = (char *)&pump.mem_save.setup[28];
+    BT.mobilename = (char *)&pump.mem_save.setup[28];
 
-    BT5.buffname[0] = '\0';
-    BT5.buffname[1] = '\0';
-    BT5.buffname[2] = '\0';
-    BT5.buffname[3] = '\0';
+    BT.buffname[0] = '\0';
+    BT.buffname[1] = '\0';
+    BT.buffname[2] = '\0';
+    BT.buffname[3] = '\0';
 
     pump.xrpm[0] = 1200;
     pump.xrpm[1] = 1982;
@@ -63,13 +63,13 @@ void init_0(void)
     mem_read(&pump.mem_save);
 
     pump._Ftestoutput = RESET;
-    BT5._Fadduser = RESET;
-    BT5._Fsetpower = RESET;      // Don't send AT+POWR anymore
-    BT5._Fsetconni = RESET;      // Don't send AT+CONN anymore
-    BT5._FATrespond = RESET;
-    BT5._FATmode = RESET;        // Exit AT mode immediately
-    BT5._Fgetname = SET;         // Pretend we got name already
-    BT5._Fgetmac = SET;          // Pretend we got MAC already
+    BT._Fadduser = RESET;
+    BT._Fsetpower = RESET;      // Don't send AT+POWR anymore
+    BT._Fsetconni = RESET;      // Don't send AT+CONN anymore
+    BT._FATrespond = RESET;
+    BT._FATmode = RESET;        // Exit AT mode immediately
+    BT._Fgetname = SET;         // Pretend we got name already
+    BT._Fgetmac = SET;          // Pretend we got MAC already
 }
 
 int main()

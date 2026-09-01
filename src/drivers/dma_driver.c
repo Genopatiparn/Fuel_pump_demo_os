@@ -2,22 +2,22 @@
 
 void initTxBuffers(void)
 {
-    BT5.bufferReadIndex = 0;
-    BT5.bufferWriteIndex = 0;
-    BT5.buffersUsed = 0;
-    BT5.dmaBusy = RESET;
+    BT.bufferReadIndex = 0;
+    BT.bufferWriteIndex = 0;
+    BT.buffersUsed = 0;
+    BT.dmaBusy = RESET;
 
     for (uint8_t i = 0; i < 5; i++)
     {
-        BT5.bufferSizes[i] = 0;
-        memset(BT5.txBuffer[i], 0, 100);
+        BT.bufferSizes[i] = 0;
+        memset(BT.txBuffer[i], 0, 100);
     }
 }
 
 FlagStatus addToTxBuffer(char *data, unsigned char size)
 {
     // check if buffer full
-    if (BT5.buffersUsed >= 5)
+    if (BT.buffersUsed >= 5)
     {
         return RESET;
     }
@@ -29,15 +29,15 @@ FlagStatus addToTxBuffer(char *data, unsigned char size)
     }
 
     // copy data to write buffer
-    memcpy(&BT5.txBuffer[BT5.bufferWriteIndex], data, size);
-    BT5.bufferSizes[BT5.bufferWriteIndex] = size;
+    memcpy(&BT.txBuffer[BT.bufferWriteIndex], data, size);
+    BT.bufferSizes[BT.bufferWriteIndex] = size;
 
     // update write index
-    BT5.bufferWriteIndex = (BT5.bufferWriteIndex + 1) % 5;
-    BT5.buffersUsed++;
+    BT.bufferWriteIndex = (BT.bufferWriteIndex + 1) % 5;
+    BT.buffersUsed++;
 
     // start transmission if DMA not busy
-    if (BT5.dmaBusy == RESET)
+    if (BT.dmaBusy == RESET)
     {
         serviceDmaInterrupt();
     }
@@ -48,34 +48,34 @@ FlagStatus addToTxBuffer(char *data, unsigned char size)
 void serviceDmaInterrupt(void)
 {
     // check if there are buffers to send
-    if (BT5.buffersUsed == 0)
+    if (BT.buffersUsed == 0)
     {
-        BT5.dmaBusy = RESET;
+        BT.dmaBusy = RESET;
         return;
     }
 
     // check if previous transmission complete
-    if (dma_flag_get(DMA0, DMA_CH1, DMA_FLAG_FTF) == RESET && BT5.dmaBusy == SET)
+    if (dma_flag_get(DMA0, DMA_CH1, DMA_FLAG_FTF) == RESET && BT.dmaBusy == SET)
     {
         // move to next buffer
-        BT5.bufferReadIndex = (BT5.bufferReadIndex + 1) % 5;
-        BT5.buffersUsed--;
+        BT.bufferReadIndex = (BT.bufferReadIndex + 1) % 5;
+        BT.buffersUsed--;
 
-        if (BT5.buffersUsed == 0)
+        if (BT.buffersUsed == 0)
         {
-            BT5.dmaBusy = RESET;
+            BT.dmaBusy = RESET;
             return;
         }
     }
 
     // start transmission
-    if (BT5.buffersUsed > 0)
+    if (BT.buffersUsed > 0)
     {
-        BT5.dmaBusy = SET;
+        BT.dmaBusy = SET;
 
         dma_channel_disable(DMA0, DMA_CH1);
-        dma_memory_address_config(DMA0, DMA_CH1, (uint32_t)&BT5.txBuffer[BT5.bufferReadIndex]);
-        dma_transfer_number_config(DMA0, DMA_CH1, BT5.bufferSizes[BT5.bufferReadIndex]);
+        dma_memory_address_config(DMA0, DMA_CH1, (uint32_t)&BT.txBuffer[BT.bufferReadIndex]);
+        dma_transfer_number_config(DMA0, DMA_CH1, BT.bufferSizes[BT.bufferReadIndex]);
         dma_flag_clear(DMA0, DMA_CH1, DMA_FLAG_FTF);
         dma_channel_enable(DMA0, DMA_CH1);
     }
