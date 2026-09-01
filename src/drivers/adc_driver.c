@@ -18,9 +18,7 @@ void init_adc()
     adc_external_trigger_config(ADC0, ADC_REGULAR_CHANNEL, ENABLE);
 
     // oversampling for noise reduction
-    adc_oversample_mode_config(ADC0, ADC_OVERSAMPLING_ALL_CONVERT, 
-                               ADC_OVERSAMPLING_SHIFT_1B, 
-                               ADC_OVERSAMPLING_RATIO_MUL2);
+    adc_oversample_mode_config(ADC0, ADC_OVERSAMPLING_ALL_CONVERT, ADC_OVERSAMPLING_SHIFT_1B,ADC_OVERSAMPLING_RATIO_MUL2);
     adc_oversample_mode_enable(ADC0);
     
     // channel 10 = PC0

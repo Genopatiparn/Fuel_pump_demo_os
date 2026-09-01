@@ -93,8 +93,7 @@ void TIMER7_Channel_IRQHandler(void)
             pump.timeCapRpm = timer_channel_capture_value_register_read(TIMER7, TIMER_CH_0);
             
             // capture pulse width
-            pump.counterInj = ~timer_channel_capture_value_register_read(TIMER7, TIMER_CH_1) 
-                            + pump.timeCapRpm;
+            pump.counterInj = ~timer_channel_capture_value_register_read(TIMER7, TIMER_CH_1) + pump.timeCapRpm;
             
             // signal that new data is ready
             pump.newRpm = SET;

@@ -40,7 +40,7 @@ void vAssertCalled(void)
     {
         while (looping == 0LU)
         {
-            __NOP();  // use __NOP() instead of portNOP()
+            __NOP(); 
         }
     }
     __enable_irq();  // enable interrupts instead of taskEXIT_CRITICAL

@@ -19,8 +19,7 @@ void updateCurrentMeasurement(void)
 {
   uint16_t adcValue = adc_regular_data_read(ADC0);
   float current = (float)adcValue * 0.52f;
-  float filteredCurrent = (float)pump.realCurrent +
-                          (0.3f * (current - (float)pump.realCurrent));
+  float filteredCurrent = (float)pump.realCurrent + (0.3f * (current - (float)pump.realCurrent));
 
   pump.realCurrent = (filteredCurrent > 0.0f) ? (uint16_t)filteredCurrent : 0;
 }
